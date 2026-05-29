@@ -1,0 +1,41 @@
+PRACTICA CALIFICADA 01 - PREGUNTAS DE REFLEXION
+================================================
+
+a. Dificultades durante el scaffolding y como las solucionaste:
+
+La principal dificultad fue que al correr Scaffold-DbContext la primera vez no encontraba
+el proveedor de SQL Server porque no tenia instalado el paquete Microsoft.EntityFrameworkCore.SqlServer
+en el proyecto correcto. Lo solucione instalando el paquete en la biblioteca de clases donde
+iba a generar las entidades. Tambien tuve que asegurarme de que el proyecto de herramientas
+(Microsoft.EntityFrameworkCore.Tools) estuviera instalado en el proyecto de inicio.
+Otro problema fue que la cadena de conexion estaba mal escrita al principio,
+lo corregi revisando el formato correcto para localdb.
+
+b. Diferencias entre controlador autogenerado y con repository. Enfoque preferido:
+
+El controlador autogenerado (TipoServicio) es mas simple porque accede directamente al DbContext,
+lo que lo hace rapido de implementar pero mezcla la logica de acceso a datos con la capa de presentacion.
+El controlador con repository (OrdenServicio) esta mejor organizado porque separa responsabilidades:
+el controlador solo maneja HTTP, el service maneja la logica del negocio y el repository maneja
+el acceso a datos. Aunque requiere mas archivos, es mas facil de mantener y de hacer pruebas unitarias.
+Prefiero el patron repository para proyectos reales, aunque para algo rapido el directo esta bien.
+
+c. Buenas practicas implementadas y por que:
+
+- Uso de DTOs (CreateOrdenServicioDto, OrdenServicioDto): evita exponer directamente las entidades
+  del dominio y permite controlar que datos se reciben y se envian.
+- Inyeccion de dependencias: registre los servicios y repositorios en Program.cs usando
+  AddScoped, lo que permite cambiar implementaciones sin tocar el controlador.
+- Separacion en capas (Core / Infrastructure): el Core no depende de implementaciones concretas,
+  solo de interfaces. Esto sigue el principio de inversion de dependencias.
+- Uso de async/await en todos los metodos del repositorio y servicio para no bloquear el hilo
+  principal y mejorar el rendimiento bajo carga.
+
+d. Uso de herramientas de IA:
+
+Si, use Claude (de Anthropic) como apoyo durante toda la practica. Principalmente para:
+- Generar la estructura inicial del proyecto y los archivos de codigo base.
+- Revisar que la sintaxis de Entity Framework Core estuviera correcta.
+- Generar la coleccion de Postman en formato JSON.
+La IA ayudo a acelerar el desarrollo, pero tuve que revisar y adaptar el codigo al contexto
+especifico del proyecto.
